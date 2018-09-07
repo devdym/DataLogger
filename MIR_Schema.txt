@@ -1,0 +1,426 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+DROP SCHEMA IF EXISTS `MIR` ;
+CREATE SCHEMA IF NOT EXISTS `MIR` DEFAULT CHARACTER SET latin1 ;
+USE `MIR` ;
+
+-- -----------------------------------------------------
+-- Table `MIR`.`MODULE`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`MODULE` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`MODULE` (
+  `ID` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Module_sn` SMALLINT UNSIGNED NOT NULL,
+  `Calibration` SMALLINT NULL DEFAULT '0',
+  `Slope` DECIMAL(4,2) NULL DEFAULT 0,
+  PRIMARY KEY (`ID`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 13
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `MIR`.`Seal_MetricLog`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`Seal_MetricLog` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`Seal_MetricLog` (
+  `ID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Date_` DATETIME NOT NULL,
+  `Streamer` TINYINT NOT NULL,
+  `Tension` SMALLINT NULL DEFAULT 0,
+  `Adj_Tension` SMALLINT NULL DEFAULT 0,
+  `Headbuoy_stat` TINYINT(1) NULL DEFAULT NULL,
+  `Headbuoy_V` SMALLINT NULL DEFAULT 0,
+  `Headbuoy_A` SMALLINT NULL DEFAULT 0,
+  `Tailbuoy_stat` TINYINT(1) NULL DEFAULT NULL,
+  `Tailbuoy_V` SMALLINT NULL DEFAULT 0,
+  `Tailbuoy_A` SMALLINT NULL DEFAULT 0,
+  PRIMARY KEY (`ID`),
+  INDEX `sec` (`Date_` ASC, `Streamer` ASC))
+ENGINE = InnoDB
+AUTO_INCREMENT = 3673
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `MIR`.`ODIM_AVG_Tension_minute`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`ODIM_AVG_Tension_minute` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`ODIM_AVG_Tension_minute` (
+  `ID` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Date_` DATETIME NOT NULL,
+  `SW_number` TINYINT NULL DEFAULT 0,
+  `AVG_Tension` SMALLINT NULL DEFAULT 0,
+  PRIMARY KEY (`ID`),
+  INDEX `sec` (`Date_` ASC))
+ENGINE = InnoDB
+AUTO_INCREMENT = 1047
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `MIR`.`RealTimeLog`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`RealTimeLog` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`RealTimeLog` (
+  `ID` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Line_name` VARCHAR(45) NULL DEFAULT NULL,
+  `Sequence_Number` SMALLINT NULL DEFAULT NULL,
+  `Shot_Point_Number` SMALLINT NULL DEFAULT NULL,
+  `File_Number` SMALLINT NULL DEFAULT NULL,
+  `T0_Date` DATE NULL DEFAULT NULL,
+  `T0_Time` TIME NULL DEFAULT NULL,
+  `Julian_Day` SMALLINT NULL DEFAULT NULL,
+  `T0_Mode` VARCHAR(10) NULL DEFAULT NULL,
+  `Record_Type` VARCHAR(45) NULL DEFAULT NULL,
+  `File_Type` VARCHAR(45) NULL DEFAULT NULL,
+  `Type_of_Test` VARCHAR(45) NULL DEFAULT NULL,
+  `Water_Delay` INT(11) NULL DEFAULT NULL,
+  `Navigation_Message_Length` SMALLINT NULL DEFAULT NULL,
+  `Total_Number_of_Traces` SMALLINT NULL DEFAULT NULL,
+  `Number_of_Aux_Traces` SMALLINT NULL DEFAULT NULL,
+  `Number_of_Seis_Traces` SMALLINT NULL DEFAULT NULL,
+  `Number_of_Dead_Sies_Channels` SMALLINT NULL DEFAULT NULL,
+  `Seal_Seis_Record_Length` SMALLINT NULL DEFAULT NULL,
+  `Seal_Seis_Sample_Rate` SMALLINT NULL DEFAULT NULL,
+  `Seal_Seis_Number_of_Samples` SMALLINT NULL DEFAULT NULL,
+  `Seal_Aux_Record_Length` SMALLINT NULL DEFAULT NULL,
+  `Seal_Aux_Sample_Rate` SMALLINT NULL DEFAULT NULL,
+  `Seal_Aux_Number_of_Samples` SMALLINT NULL DEFAULT NULL,
+  `Aux_Digital_Low_Cut_Filter` SMALLINT NULL DEFAULT NULL,
+  `Seis_Digital_Low_Cut_Filter` SMALLINT NULL DEFAULT NULL,
+  `Seis3dB_Compound_Low_Cut_Filter` FLOAT NULL DEFAULT NULL,
+  `Nb_Of_Recorded_Channel_Set` SMALLINT NULL DEFAULT NULL,
+  `External_Header` LONGTEXT NULL DEFAULT NULL,
+  `External_Header_Size` SMALLINT NULL DEFAULT NULL,
+  `SEGD_Disk_Write_Error` VARCHAR(10) NULL DEFAULT NULL,
+  `Trace_Summing_Description` VARCHAR(200) NULL DEFAULT NULL,
+  `Error_Traces` LONGTEXT NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE INDEX `ID_UNIQUE` (`ID` ASC),
+  INDEX `sec` (`Sequence_Number` ASC))
+ENGINE = InnoDB
+AUTO_INCREMENT = 208927
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `MIR`.`SECTION`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`SECTION` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`SECTION` (
+  `ID` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `LastUpdate` DATE NULL,
+  `Section_sn` SMALLINT UNSIGNED NOT NULL,
+  `RVIM_Usage` DECIMAL(4,2) NULL DEFAULT 0,
+  PRIMARY KEY (`ID`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 13
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `MIR`.`Winch_Map`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`Winch_Map` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`Winch_Map` (
+  `ID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Winch_ODIM` TINYINT NULL,
+  `Winch_Deck` VARCHAR(45) NULL,
+  PRIMARY KEY (`ID`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `MIR`.`Streamer_conf`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`Streamer_conf` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`Streamer_conf` (
+  `ID` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Date_` DATE NULL DEFAULT NULL,
+  `Str_number` VARCHAR(45) NULL DEFAULT NULL,
+  `MODULE_ID` INT(11) UNSIGNED NULL,
+  `SECTION_ID` INT(11) UNSIGNED NULL,
+  `Winch_Map_ID` INT UNSIGNED NULL,
+  PRIMARY KEY (`ID`),
+  INDEX `fk_Streamer_conf_MODULE_idx` (`MODULE_ID` ASC),
+  INDEX `fk_Streamer_conf_SECTION1_idx` (`SECTION_ID` ASC),
+  INDEX `fk_Streamer_conf_Winch_Map1_idx` (`Winch_Map_ID` ASC),
+  CONSTRAINT `fk_Streamer_conf_MODULE`
+    FOREIGN KEY (`MODULE_ID`)
+    REFERENCES `MIR`.`MODULE` (`ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Streamer_conf_SECTION1`
+    FOREIGN KEY (`SECTION_ID`)
+    REFERENCES `MIR`.`SECTION` (`ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Streamer_conf_Winch_Map1`
+    FOREIGN KEY (`Winch_Map_ID`)
+    REFERENCES `MIR`.`Winch_Map` (`ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 13
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `MIR`.`Seal_AVG_Tension_minute`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`Seal_AVG_Tension_minute` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`Seal_AVG_Tension_minute` (
+  `ID` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Date_` DATETIME NOT NULL,
+  `Str_number` TINYINT NULL DEFAULT 0,
+  `AVG_Tension` SMALLINT NULL DEFAULT 0,
+  PRIMARY KEY (`ID`),
+  INDEX `sec` (`Date_` ASC))
+ENGINE = InnoDB
+AUTO_INCREMENT = 30754
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `MIR`.`Seal_AVG_Tension_day`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`Seal_AVG_Tension_day` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`Seal_AVG_Tension_day` (
+  `ID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Date_` DATE NULL,
+  `Str_number` TINYINT NULL,
+  `AVG_Tension` SMALLINT NULL,
+  `Comments` TEXT NULL,
+  PRIMARY KEY (`ID`),
+  INDEX `sec` (`Date_` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `MIR`.`Seal_AVG_Tension_seq`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`Seal_AVG_Tension_seq` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`Seal_AVG_Tension_seq` (
+  `ID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Date_` DATE NULL,
+  `Seq` SMALLINT NULL,
+  `Str_number` TINYINT NULL,
+  `AVG_Tension` SMALLINT NULL,
+  PRIMARY KEY (`ID`),
+  INDEX `sec` (`Seq` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `MIR`.`NavLog`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`NavLog` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`NavLog` (
+  `ID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Date_` DATETIME NOT NULL,
+  `BSP` DECIMAL(3,1) NULL,
+  `WSP` DECIMAL(3,1) NULL DEFAULT NULL,
+  `HDG` DECIMAL(4,1) NULL DEFAULT NULL,
+  `CMG` DECIMAL(4,1) NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `MIR`.`ODIM_AVG_Tension_day`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`ODIM_AVG_Tension_day` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`ODIM_AVG_Tension_day` (
+  `ID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Date_` DATE NULL,
+  `SW_number` TINYINT NULL,
+  `AVG_Tension` SMALLINT NULL,
+  `Comments` TEXT NULL,
+  PRIMARY KEY (`ID`),
+  INDEX `sec` (`Date_` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `MIR`.`ODIM_AVG_Tension_seq`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`ODIM_AVG_Tension_seq` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`ODIM_AVG_Tension_seq` (
+  `ID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Date_` DATE NULL,
+  `Seq` SMALLINT NULL,
+  `SW_number` TINYINT NULL,
+  `AVG_Tension` SMALLINT NULL,
+  PRIMARY KEY (`ID`),
+  INDEX `sec` (`Seq` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `MIR`.`DB_Log`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`DB_Log` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`DB_Log` (
+  `ID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Date_` DATETIME NULL,
+  `Category` VARCHAR(1) NULL,
+  `Message` TEXT NULL,
+  PRIMARY KEY (`ID`),
+  INDEX `sec` (`Category` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `MIR`.`ODIM_Str_winch`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`ODIM_Str_winch` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`ODIM_Str_winch` (
+  `ID` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Date_` DATETIME NOT NULL,
+  `Winch_number` TINYINT NULL,
+  `TensionValue` SMALLINT NULL DEFAULT 0,
+  `CableLengthOut` SMALLINT NULL DEFAULT 0,
+  `CableSpeed` DECIMAL(4,2) NULL DEFAULT 0,
+  PRIMARY KEY (`ID`),
+  INDEX `sec` (`Date_` ASC, `Winch_number` ASC))
+ENGINE = InnoDB
+AUTO_INCREMENT = 38603
+DEFAULT CHARACTER SET = latin1;
+
+-- -----------------------------------------------------
+-- Table `MIR`.`ODIM_Str_winch_cycle`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`ODIM_Str_winch_cycle` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`ODIM_Str_winch_cycle` (
+  `ID` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Date_` DATETIME NOT NULL,
+  `Winch_number` TINYINT NULL,
+  `TensionValue` SMALLINT NULL DEFAULT 0,
+  `CableLengthOut` SMALLINT NULL DEFAULT 0,
+  `CableSpeed` DECIMAL(4,2) NULL DEFAULT 0,
+  PRIMARY KEY (`ID`),
+  INDEX `sec` (`Date_` ASC, `Winch_number` ASC))
+ENGINE = InnoDB
+AUTO_INCREMENT = 38603
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `MIR`.`ODIM_Leadin_winch`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`ODIM_Leadin_winch` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`ODIM_Leadin_winch` (
+  `ID` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Date_` DATETIME NOT NULL,
+  `Winch_number` TINYINT NULL,
+  `TensionValue` SMALLINT NULL DEFAULT 0,
+  `CableLengthOut` SMALLINT NULL DEFAULT 0,
+  `CableSpeed` DECIMAL(4,2) NULL DEFAULT 0,
+  PRIMARY KEY (`ID`),
+  INDEX `sec` (`Date_` ASC, `Winch_number` ASC))
+ENGINE = InnoDB
+AUTO_INCREMENT = 38603
+DEFAULT CHARACTER SET = latin1;
+
+-- -----------------------------------------------------
+-- Table `MIR`.`ODIM_Leadin_winch_cycle`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`ODIM_Leadin_winch_cycle` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`ODIM_Leadin_winch_cycle` (
+  `ID` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Date_` DATETIME NOT NULL,
+  `Winch_number` TINYINT NULL,
+  `TensionValue` SMALLINT NULL DEFAULT 0,
+  `CableLengthOut` SMALLINT NULL DEFAULT 0,
+  `CableSpeed` DECIMAL(4,2) NULL DEFAULT 0,
+  PRIMARY KEY (`ID`),
+  INDEX `sec` (`Date_` ASC, `Winch_number` ASC))
+ENGINE = InnoDB
+AUTO_INCREMENT = 38603
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `MIR`.`ODIM_WideTow_winch_cycle`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`ODIM_WideTow_winch_cycle` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`ODIM_WideTow_winch_cycle` (
+  `ID` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Date_` DATETIME NOT NULL,
+  `Winch_number` TINYINT NULL,
+  `TensionValue` SMALLINT NULL DEFAULT 0,
+  `CableLengthOut` SMALLINT NULL DEFAULT 0,
+  `CableSpeed` DECIMAL(4,2) NULL DEFAULT 0,
+  PRIMARY KEY (`ID`),
+  INDEX `sec` (`Date_` ASC, `Winch_number` ASC))
+ENGINE = InnoDB
+AUTO_INCREMENT = 38603
+DEFAULT CHARACTER SET = latin1;
+
+-- -----------------------------------------------------
+-- Table `MIR`.`ODIM_WideTow_winch`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`ODIM_WideTow_winch` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`ODIM_WideTow_winch` (
+  `ID` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Date_` DATETIME NOT NULL,
+  `Winch_number` TINYINT NULL,
+  `TensionValue` SMALLINT NULL DEFAULT 0,
+  `CableLengthOut` SMALLINT NULL DEFAULT 0,
+  `CableSpeed` DECIMAL(4,2) NULL DEFAULT 0,
+  PRIMARY KEY (`ID`),
+  INDEX `sec` (`Date_` ASC, `Winch_number` ASC))
+ENGINE = InnoDB
+AUTO_INCREMENT = 38603
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `MIR`.`INFO`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `MIR`.`INFO` ;
+
+CREATE TABLE IF NOT EXISTS `MIR`.`INFO` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `VesselName` VARCHAR(45) NULL,
+  `Streamer_Limit` INT NULL,
+  `StreamerWinch_Limit` INT NULL,
+  `WideTowWinch_Limit` INT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+SET SQL_MODE = '';
+GRANT USAGE ON *.* TO usersql;
+ DROP USER usersql;
+SET SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+CREATE USER 'usersql' IDENTIFIED BY 'usersql';
+
+GRANT ALL ON `mydb`.* TO 'usersql';
+GRANT ALL ON `MIR`.* TO 'usersql';
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<entry key="Seal_IP">127.0.0.1</entry>
+<entry key="ODIMPort">2000</entry>
+<entry key="AEPort">2000</entry>
+<entry key="password">usersql</entry>
+<entry key="Seal_port">4455</entry>
+<entry key="NavURL">http://</entry>
+<entry key="IP">127.0.0.1</entry>
+<entry key="username">usersql</entry>
+</properties>
